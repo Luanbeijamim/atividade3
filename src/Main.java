@@ -1,32 +1,39 @@
 public class Main {
     public static void main(String[] args) {
-        // Caso 1: Mesmo ISBN, títulos diferentes
         Livro l1 = new Livro("Clean Code", "978-0132350884");
-        Livro l2 = new Livro("Código Limpo (Traduzido)", "978-0132350884");
+        Livro l2 = new Livro("Código Limpo", "978-0132350884");
+        Livro l3 = new Livro("Java Efetivo", "978-0134685991");
 
-        System.out.println("Mesmo ISBN, títulos diferentes: " + l1.equals(l2));
+        // 1. Comparando HashCodes de livros com o MESMO ISBN
+        System.out.println("ISBNs iguais:");
+        System.out.println("HashCode L1: " + l1.hashCode());
+        System.out.println("HashCode L2: " + l2.hashCode());
+        System.out.println("L1.equals(L2)? " + l1.equals(l2));
+        System.out.println("HashCodes são iguais? " + (l1.hashCode() == l2.hashCode()));
 
-        // Caso 2: Passando null e uma String
-        System.out.println("Comparando com null: " + l1.equals(null));
-        System.out.println("Comparando com uma String: " + l1.equals("978-0132350884"));
+        System.out.println("\n--------------------------\n");
+
+        // 2. Comparando HashCodes de livros com ISBNs DIFERENTES
+        System.out.println("ISBNs diferentes:");
+        System.out.println("HashCode L1: " + l1.hashCode());
+        System.out.println("HashCode L3: " + l3.hashCode());
+        System.out.println("HashCodes são diferentes? " + (l1.hashCode() != l3.hashCode()));
 
         /*
-          RESPOSTAS AOS QUESTIONAMENTOS
-
-          1. SÃO IGUAIS COM TÍTULOS DIFERENTES?
-          Sim. Como o critério no equals() é apenas o ISBN, o Java retornará 'true'.
-          Isso é útil para identificar o mesmo produto em edições ou traduções diferentes.
-
-          2. LANÇA EXCEÇÃO COM NULL OU STRING?
-          Não. O uso do 'instanceof' protege o código. Se o objeto for null ou
-          de outro tipo (como String), o 'instanceof' retorna 'false' e o
-          método encerra graciosamente sem causar um NullPointerException.
-
-          3. POR QUE COMPARAMOS PELO ISBN E NÃO PELO TÍTULO?
-          O ISBN é um IDENTIFICADOR ÚNICO universal (como um CPF para livros).
-          Títulos podem se repetir ou ter variações (ex: "Java" vs "Java: 2ª Edição"),
-          mas o ISBN garante que estamos falando do mesmo registro técnico.
-          Em sistemas reais, sempre usamos chaves primárias ou IDs únicos para equals.
+         * --- ANÁLISE DO EXERCÍCIO ---
+         *
+         * 1. MESMO ISBN: Os hashCodes são idênticos. Como 'l1.equals(l2)' é true,
+         * o contrato exige que os códigos sejam os mesmos.
+         *
+         * 2. ISBNS DIFERENTES: Os hashCodes são diferentes. Embora seja tecnicamente
+         * possível que dois objetos diferentes tenham o mesmo hash (chamado de colisão),
+         * o ideal é que objetos diferentes gerem códigos diferentes.
+         *
+         * POR QUE ISSO É IMPORTANTE?
+         * Imagine um HashMap como um armário cheio de gavetas numeradas. O hashCode()
+         * diz ao Java em qual gaveta colocar o objeto. Se você tem dois objetos
+         * que o equals() diz que são "iguais", mas eles dão hashCodes (gavetas)
+         * diferentes, o Java nunca vai conseguir encontrar seu objeto no armário!
          */
     }
 }
